@@ -1,6 +1,6 @@
 # generator-aurelia-vs2015
 
-> [Yeoman](http://yeoman.io) generator for adding the Aurelia skelleton to a Visual Studio 2015 ASP.NET 5 project.
+> [Yeoman](http://yeoman.io) generator for adding the Aurelia skeleton to a Visual Studio 2015 ASP.NET 5 project.
 
 
 ## Getting Started

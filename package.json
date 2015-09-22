@@ -17,7 +17,9 @@
     "generators"
   ],
   "keywords": [
-    "yeoman-generator"
+    "yeoman-generator",
+	"aurelia",
+	"asp.net"
   ],
   "dependencies": {
     "bluebird": "^2.9.34",

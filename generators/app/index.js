@@ -8,13 +8,29 @@ var rimraf = require('rimraf');
 var Generator = module.exports = yeoman.generators.Base.extend({
 
 		tempFolder : path.join(os.tmpdir().toString(), 'yeoman', 'dl', 'aurelia-skeleton-navigation'),
-
+		vsVersion  : '2015',
+		
 		constructor : function () {
 			yeoman.generators.Base.apply(this, arguments);
 			this.option('skip-install');
 		},
 
 		init : function () {},
+
+		prompting: function () {
+			var done = this.async();
+			this.prompt({
+				type    : 'list',
+				name    : 'vsVersion',
+				message : 'What version of Visual Studio is installed and has the C++ components?',
+				default : this.vsVersion,
+				choices : ['2012', '2012e', '2013', '2013e', '2015', '2015e']
+			}, function (answers) {
+				this.vsVersion = answers.vsVersion;
+				this.log('We\'ll use Visual Studio ' + this.vsVersion + ' during the npm install.');
+				done();
+			}.bind(this));
+		},
 
 		writing : function () {
 			var done = this.async();
@@ -73,6 +89,7 @@ var Generator = module.exports = yeoman.generators.Base.extend({
 						this._setStylesPath();
 						this._setBuildPaths();
 						this._setServePaths();
+						this._setKarmaPaths();
 						
 						done();
 					}
@@ -195,30 +212,61 @@ var Generator = module.exports = yeoman.generators.Base.extend({
 				fileContents);
 			this.log('Wrote file contents of ' + filePath);
 		},
+
 		
+		/*
+		Inject the following into the karma.conf.js file.
+		Needed to allow Karma to locate files for "gulp test"
+		
+		proxies:  {
+		  '/base/jspm_packages/': '/base/wwwroot/jspm_packages/'
+		},		
+		*/
+		_setKarmaPaths: function () {
+			var filePath = this.destinationPath('karma.conf.js')
+			this.log('Reading file contents of ' + filePath);
+			var fileContents = this.fs.read(filePath);
+			this.log('Finished reading file contents. Updating file.');
 
-		install : function () {
-			this._executeNPMInstall();
-			this._runJSPM();
+			if (fileContents.indexOf('config.set({') <= -1) {
+				this.env.error('Failed to locate the location to insert proxies into the karma.confg.js.');
+				return;
+			}
+			
+			// Adjust the output path.
+			fileContents = fileContents.replace(
+				'config.set({', 
+				'config.set({\r\n\r\n    proxies:  {\r\n      \'/base/jspm_packages/\': \'/base/wwwroot/jspm_packages/\'\r\n    },'
+			);
+
+			// Update the file.
+			this.log('Writing file contents of ' + filePath);
+			this.fs.write(
+				filePath,
+				fileContents);
+			this.log('Wrote file contents of ' + filePath);
 		},
 
-		_executeNPMInstall: function () {
-			if (!this.options['skip-install']){
-				this.log('Executing NPM install');
-				this.npmInstall();
-			} else {
-				this.log('NPM install deliberately skipped');
-			}
-		},
+		install : {
+			runJSPM: function() {
+				if (!this.options['skip-install']){
+					this.log('Executing JSPM install');
+					this.spawnCommand('jspm', ['install']);
+				} else{
+					this.log('JSPM install deliberately skipped');
+				}
+			},
 
-		_runJSPM: function() {
-			if (!this.options['skip-install']){
-				this.log('Executing JSPM install');
-				this.spawnCommand('jspm', ['install']);
-			} else{
-				this.log('JSPM install deliberately skipped');
+			executeNPMInstall: function () {
+				if (!this.options['skip-install']){
+					this.log('Executing NPM install with VS ' + this.vsVersion);
+					this.npmInstall(null, {msvs_version: this.vsVersion});
+				} else {
+					this.log('NPM install deliberately skipped');
+				}
 			}
-		}
+
+		},
 
 	});
 

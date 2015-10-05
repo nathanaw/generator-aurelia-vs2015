@@ -1,6 +1,6 @@
 # generator-aurelia-vs2015
 
-###Aurelia + ASP.NET 5 + Visual Studio 2015###
+### Aurelia + ASP.NET 5 + Visual Studio 2015
 
 A [Yeoman](http://yeoman.io) generator  
 ... for adding the [Aurelia](http://aurelia.io) skeleton  
@@ -12,12 +12,12 @@ The generator is known to work with the Aurelia skeleton [v0.18.x](https://githu
 
 ## Getting Started
 
-####Install generator-aurelia-vs2015 from npm:
+#### Install generator-aurelia-vs2015 from npm:
 
 1. Install pre-requisites below. See [the aurelia getting started guide](http://aurelia.io/get-started.html) for details.
 2. Run **`npm install -g generator-aurelia-vs2015`**
 
-####To initiate the generator
+#### To initiate the generator
 
 1. Create a new ASP.NET 5 site in Visual Studio
   - Empty, Web API, or Web Application.

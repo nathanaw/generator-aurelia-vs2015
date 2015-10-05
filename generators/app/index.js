@@ -90,6 +90,7 @@ var Generator = module.exports = yeoman.generators.Base.extend({
 						this._setBuildPaths();
 						this._setServePaths();
 						this._setKarmaPaths();
+						this._bindGulpBuildEvents();
 						
 						done();
 					}
@@ -247,6 +248,23 @@ var Generator = module.exports = yeoman.generators.Base.extend({
 			this.log('Wrote file contents of ' + filePath);
 		},
 
+		_bindGulpBuildEvents : function () {
+			var filePath = this.destinationPath('gulpfile.js')
+			this.log('Reading file contents of ' + filePath);
+			var fileContents = this.fs.read(filePath);
+			this.log('Finished reading file contents. Updating file.');
+
+			// Bind the build events. Add the VS comment to the gulpfile that hooks these events.
+			fileContents = '/// <binding AfterBuild=\'build\' Clean=\'clean\' />\r\n' + fileContents;
+
+			// Update the file.
+			this.log('Writing file contents of ' + filePath);
+			this.fs.write(
+				filePath,
+				fileContents);
+			this.log('Wrote file contents of ' + filePath);
+		},
+		
 		install : {
 			runJSPM: function() {
 				if (!this.options['skip-install']){

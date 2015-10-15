@@ -255,7 +255,7 @@ var Generator = module.exports = yeoman.generators.Base.extend({
 			this.log('Finished reading file contents. Updating file.');
 
 			// Bind the build events. Add the VS comment to the gulpfile that hooks these events.
-			fileContents = '/// <binding AfterBuild=\'build\' Clean=\'clean\' />\r\n' + fileContents;
+			fileContents = '/// <binding BeforeBuild=\'build\' Clean=\'clean\' />\r\n' + fileContents;
 
 			// Update the file.
 			this.log('Writing file contents of ' + filePath);

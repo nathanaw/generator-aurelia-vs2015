@@ -1,7 +1,7 @@
 {
   "name": "generator-aurelia-vs2015",
-  "version": "0.1.5",
-  "description": "Yeoman generator for Aurelia in a VS2015 ASP.NET 5 project.",
+  "version": "0.1.6",
+  "description": "[DEPRECATED] Yeoman generator for Aurelia in a VS2015 ASP.NET 5 project.",
   "license": "MIT",
   "main": "app/index.js",
   "repository": "NathanAW/generator-aurelia-vs2015",

@@ -1,3 +1,10 @@
+> ## Deprecated
+> Aurelia supports visual studio with out of the box templates.
+> 
+> This generator is no longer needed.
+> 
+--------------------
+
 # generator-aurelia-vs2015
 
 ### Aurelia + ASP.NET 5 + Visual Studio 2015
